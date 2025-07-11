@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
   retries: 1,
-  workers: 2,
+  workers: 4,
   reporter: "html",
   use: {
     trace: "on-first-retry",
@@ -28,6 +28,14 @@ export default defineConfig({
         headless: false,
         screenshot: "only-on-failure",
         video: "retain-on-failure",
+      },
+    },
+    {
+      name: "apiTesting",
+      testDir: "./tests/api",
+      use: {
+        baseURL: "https://automationexercise.com",
+        trace: "on-first-retry",
       },
     },
   ],
