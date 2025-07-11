@@ -1,5 +1,7 @@
 import test, { expect } from "@playwright/test";
 
+// IMORTANT EVERY REQUEST HAS RESPONSE STATUS CODE 200
+
 test("Get all products", async ({ request }) => {
   // Make a GET request to get all products
   const response = await request.get("/api/productsList");
