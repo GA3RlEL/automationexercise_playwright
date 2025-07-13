@@ -2,7 +2,9 @@
   "name": "automationexercise_playwright",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "api-test": "playwright test ./tests/api --project=apiTesting"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

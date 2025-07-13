@@ -99,3 +99,113 @@ test("POST to verify login without password parameter", async ({ request }) => {
     "Bad request, email or password parameter is missing in POST request."
   );
 });
+
+test.describe("User account management tests", () => {
+  let isUserCreated: boolean = false;
+  let isUserUpdated: boolean = false;
+
+  const userData = {
+    name: "Test User",
+    email: "testuseremail@test.com",
+    password: "Test123!",
+    title: "Mr",
+    birth_date: "19",
+    birth_month: "January",
+    birth_year: "1990",
+    firstname: "Test",
+    lastname: "User",
+    company: "Test Company",
+    address1: "123 Test St",
+    country: "United States",
+    state: "California",
+    city: "Los Angeles",
+    zipcode: "90001",
+    mobile_number: "1234567890",
+  };
+
+  const updateUserData = {
+    email: "testuseremail@test.com",
+    password: "Test123!",
+    name: "Updated User",
+  };
+
+  const deleteUserData = {
+    email: "testuseremail@test.com",
+    password: "Test123!",
+  };
+
+  test.beforeAll(async ({ request }) => {
+    // Make POST request to create a new user
+    const response = await request.post("/api/createAccount", {
+      form: userData,
+    });
+
+    // Assert that response status is equal to 200
+    expect(response.ok()).toBeTruthy();
+    expect(response.status()).toBe(200);
+
+    const responseBody = await response.json();
+
+    // Assert that response code is equal to 201
+    expect(responseBody).toHaveProperty("responseCode");
+    expect(responseBody.responseCode).toBe(201);
+
+    // Assert taht message is equal to "User created!"
+    expect(responseBody).toHaveProperty("message");
+    expect(responseBody.message).toBe("User created!");
+
+    // Set flag to true if user is created
+    isUserCreated = true;
+  });
+
+  test("PUT method to update user", async ({ request }) => {
+    test.skip(!isUserCreated, "User is not created");
+
+    // Make PUT request to update the user
+    const reponse = await request.put("/api/updateAccount", {
+      form: updateUserData,
+    });
+
+    // Assert that response status is equal to 200
+    expect(reponse.ok()).toBeTruthy();
+    expect(reponse.status()).toBe(200);
+
+    const responseBody = await reponse.json();
+
+    console.log(responseBody);
+
+    // Assert that responseCode is equal to 200
+    expect(responseBody).toHaveProperty("responseCode");
+    expect(responseBody.responseCode).toBe(200);
+
+    // Assert that message is equal to "User updated!"
+    expect(responseBody).toHaveProperty("message");
+    expect(responseBody.message).toBe("User updated!");
+
+    // Set flag to true if user is updated
+    isUserUpdated = true;
+  });
+
+  test.afterAll(async ({ request }) => {
+    test.skip(!isUserUpdated, "User is not updated");
+
+    // Make DELETE request to delete the user account
+    const response = await request.delete("/api/deleteAccount", {
+      form: deleteUserData,
+    });
+
+    // Assert that response status is equal to 200
+    expect(response.ok()).toBeTruthy();
+    expect(response.status()).toBe(200);
+
+    const responseBody = await response.json();
+
+    // Assert that responseCode is equal to 200
+    expect(responseBody).toHaveProperty("responseCode");
+    expect(responseBody.responseCode).toBe(200);
+
+    // Assert that message is equal to "Account deleted!"
+    expect(responseBody).toHaveProperty("message");
+    expect(responseBody.message).toBe("Account deleted!");
+  });
+});
