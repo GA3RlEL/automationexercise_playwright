@@ -154,8 +154,37 @@ test.describe("User account management tests", () => {
     expect(responseBody).toHaveProperty("message");
     expect(responseBody.message).toBe("User created!");
 
+    console.log(responseBody);
+
     // Set flag to true if user is created
     isUserCreated = true;
+  });
+
+  test("GET user account details by email", async ({ request }) => {
+    test.skip(!isUserCreated, "User is not created");
+
+    // Make GET request to fetch user account details by email
+    const response = await request.get("/api/getUserDetailByEmail", {
+      params: { email: userData.email },
+    });
+
+    // Assert that response status is equal to 200
+    expect(response.ok()).toBeTruthy();
+    expect(response.status()).toBe(200);
+
+    const responseBody = await response.json();
+
+    console.log(responseBody);
+
+    // Assert that responseCode is equal to 200
+    expect(responseBody).toHaveProperty("responseCode");
+    expect(responseBody.responseCode).toBe(200);
+
+    // Assert that user data matches the created user data
+    expect(responseBody.user.email).toBe(userData.email);
+    expect(responseBody.user.name).toBe(userData.name);
+    expect(responseBody.user.first_name).toBe(userData.firstname);
+    expect(responseBody.user.last_name).toBe(userData.lastname);
   });
 
   test("PUT method to update user", async ({ request }) => {
@@ -187,7 +216,9 @@ test.describe("User account management tests", () => {
   });
 
   test.afterAll(async ({ request }) => {
-    test.skip(!isUserUpdated, "User is not updated");
+    if (isUserCreated) {
+      test.skip(!isUserUpdated, "User is not updated");
+    }
 
     // Make DELETE request to delete the user account
     const response = await request.delete("/api/deleteAccount", {
