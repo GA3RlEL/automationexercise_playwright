@@ -13,6 +13,7 @@ export default defineConfig({
   projects: [
     {
       name: "chromium",
+      testDir: "./tests/ui",
       use: {
         browserName: "chromium",
         headless: false,
@@ -23,6 +24,7 @@ export default defineConfig({
 
     {
       name: "firefox",
+      testDir: "./tests/ui",
       use: {
         browserName: "firefox",
         headless: false,
