@@ -39,7 +39,7 @@ test("Login user with valid credentials", async ({ page }) => {
   await homePage.verifyUserIsLoggedIn(loginUser.name);
 });
 
-test.only("Login user with invalid credentials", async ({ page }) => {
+test("Login user with invalid credentials", async ({ page }) => {
   const poManager = new POManager(page);
   const homePage = poManager.getHomePage();
   const loginPage = poManager.getLoginPage();
