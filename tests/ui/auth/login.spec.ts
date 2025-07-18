@@ -38,3 +38,26 @@ test("Login user with valid credentials", async ({ page }) => {
   // Assert that the user is logged in
   await homePage.verifyUserIsLoggedIn(loginUser.name);
 });
+
+test.only("Login user with invalid credentials", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const loginPage = poManager.getLoginPage();
+
+  // Assert that the home page is displayed
+  await homePage.isAt();
+
+  // Navigate to the login page
+  await homePage.goToLoginPage();
+
+  // Assert that "Login to your account" text is visible
+  await loginPage.verifyLoginToYourAccountTextIsVisible();
+
+  // Sign in with invalid credentials
+  await loginPage.signIn(loginUser.email, loginUser.password + "1");
+
+  // Assert error message is visible
+  await loginPage.verifyErrorMessageIsVisible(
+    "Your email or password is incorrect!"
+  );
+});
