@@ -12,8 +12,6 @@ export class LoginPage {
   private passwordLoginInput: Locator;
   private signInButton: Locator;
 
-  private errorMessage: Locator;
-
   constructor(private page: Page) {
     // Sign up form locators
     this.signUpForm = this.page.locator(".signup-form");
@@ -28,8 +26,6 @@ export class LoginPage {
     this.emailLoginInput = this.signInForm.locator("input[type*='email']");
     this.passwordLoginInput = this.signInForm.locator("input[type='password']");
     this.signInButton = this.signInForm.getByRole("button", { name: "Login" });
-
-    this.errorMessage = this.page.locator(".login-form p");
   }
 
   async verifyNewUserSignUpTextIsVisible() {
@@ -54,10 +50,20 @@ export class LoginPage {
     await this.signUpButton.click();
   }
 
-  async verifyErrorMessageIsVisible(message: string) {
-    const isVisible = await this.errorMessage.isVisible();
+  async verifyErrorMessageIsVisible(
+    message: string,
+    formType: "sign-in" | "sign-up"
+  ) {
+    let errorMessage: Locator;
+    if (formType === "sign-in") {
+      errorMessage = this.page.locator(".login-form p");
+    } else {
+      errorMessage = this.page.locator(".signup-form p");
+    }
+
+    const isVisible = await errorMessage.isVisible();
     expect(isVisible).toBeTruthy();
-    const errorText = await this.errorMessage.textContent();
+    const errorText = await errorMessage.textContent();
     expect(errorText).toContain(message);
   }
 }

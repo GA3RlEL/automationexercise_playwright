@@ -58,11 +58,12 @@ test("Login user with invalid credentials", async ({ page }) => {
 
   // Assert error message is visible
   await loginPage.verifyErrorMessageIsVisible(
-    "Your email or password is incorrect!"
+    "Your email or password is incorrect!",
+    "sign-in"
   );
 });
 
-test.only("Logout user", async ({ page }) => {
+test("Logout user", async ({ page }) => {
   const poManager = new POManager(page);
   const homePage = poManager.getHomePage();
   const loginPage = poManager.getLoginPage();
@@ -87,4 +88,28 @@ test.only("Logout user", async ({ page }) => {
 
   // Assert that user is redirected to login page
   await loginPage.verifyLoginToYourAccountTextIsVisible();
+});
+
+test("Register user with existing email", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const loginPage = poManager.getLoginPage();
+
+  // Assert that home page is visible
+  await homePage.isAt();
+
+  // Navigate to the login page
+  await homePage.goToLoginPage();
+
+  // Assert that 'New User Signup!' is visible
+  await loginPage.verifyNewUserSignUpTextIsVisible();
+
+  // Fill the sign up form with existing email
+  await loginPage.signUp(loginUser.email, loginUser.name);
+
+  // Assert that 'Email Address already exist!' error message is visible
+  await loginPage.verifyErrorMessageIsVisible(
+    "Email Address already exist!",
+    "sign-up"
+  );
 });
