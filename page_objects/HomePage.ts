@@ -4,11 +4,13 @@ export class HomePage {
   private loginButton: Locator;
   private navBar: Locator;
   private deleteButton: Locator;
+  private logoutButton: Locator;
 
   constructor(private page: Page) {
     this.loginButton = this.page.locator("a[href='/login']");
     this.navBar = this.page.locator(".navbar-nav");
     this.deleteButton = this.page.locator("a[href*='/delete_account']");
+    this.logoutButton = this.page.locator("a[href*='/logout']");
   }
 
   async isAt() {
@@ -30,5 +32,9 @@ export class HomePage {
 
   async deleteAccount() {
     await this.deleteButton.click();
+  }
+
+  async logoutUser() {
+    await this.logoutButton.click();
   }
 }
