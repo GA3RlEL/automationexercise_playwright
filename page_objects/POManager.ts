@@ -4,6 +4,7 @@ import { LoginPage } from "./LoginPage";
 import { SignupPage } from "./SignupPage";
 import { AccountCreatedPage } from "./AccountCreatedPage";
 import { DeleteAccountPage } from "./DeleteAccountPage";
+import { ContactUsPage } from "./ContactUsPage";
 
 export class POManager {
   public homePage: HomePage;
@@ -11,6 +12,7 @@ export class POManager {
   public signupPage: SignupPage;
   public accountCreatedPage: AccountCreatedPage;
   public deleteAccountPage: DeleteAccountPage;
+  public contactUsPage: ContactUsPage;
 
   constructor(private page: Page) {
     this.homePage = new HomePage(this.page);
@@ -18,6 +20,7 @@ export class POManager {
     this.signupPage = new SignupPage(this.page);
     this.accountCreatedPage = new AccountCreatedPage(this.page);
     this.deleteAccountPage = new DeleteAccountPage(this.page);
+    this.contactUsPage = new ContactUsPage(this.page);
   }
 
   getHomePage(): HomePage {
@@ -38,5 +41,9 @@ export class POManager {
 
   getDeleteAccountPage(): DeleteAccountPage {
     return this.deleteAccountPage;
+  }
+
+  getContactUsPage(): ContactUsPage {
+    return this.contactUsPage;
   }
 }

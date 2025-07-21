@@ -5,12 +5,14 @@ export class HomePage {
   private navBar: Locator;
   private deleteButton: Locator;
   private logoutButton: Locator;
+  private contactUsButton: Locator;
 
   constructor(private page: Page) {
     this.loginButton = this.page.locator("a[href='/login']");
     this.navBar = this.page.locator(".navbar-nav");
     this.deleteButton = this.page.locator("a[href*='/delete_account']");
     this.logoutButton = this.page.locator("a[href*='/logout']");
+    this.contactUsButton = this.page.locator("a[href*='/contact_us']");
   }
 
   async isAt() {
@@ -20,6 +22,10 @@ export class HomePage {
 
   async goToLoginPage() {
     await this.loginButton.click();
+  }
+
+  async goToContactUsPage() {
+    await this.contactUsButton.click();
   }
 
   async verifyUserIsLoggedIn(username: string) {
