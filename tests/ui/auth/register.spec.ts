@@ -32,7 +32,7 @@ test("Register user", async ({ page }) => {
   await homePage.goToLoginPage();
 
   // Assert "New User Signup!" text is visible
-  await loginPage.verifyNewUserSignUpTextIsVisible();
+  await loginPage.verifyTextIsVisible("New User Signup!");
 
   // Fill sign-up form on login page
   await loginPage.signUp(registerUser.email, registerUser.name);

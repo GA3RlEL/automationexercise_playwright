@@ -1,41 +1,29 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { BaseTestClass } from "./BaseTestClass";
 
-export class LoginPage {
+export class LoginPage extends BaseTestClass {
   private signUpForm: Locator;
   private signInForm: Locator;
   private usernameRegisterInput: Locator;
   private emailRegisterInput: Locator;
-  private newUserSignUpText: Locator;
   private signUpButton: Locator;
-  private loginToYourAccountText: Locator;
   private emailLoginInput: Locator;
   private passwordLoginInput: Locator;
   private signInButton: Locator;
 
-  constructor(private page: Page) {
+  constructor(page: Page) {
+    super(page);
     // Sign up form locators
     this.signUpForm = this.page.locator(".signup-form");
     this.usernameRegisterInput = this.signUpForm.getByPlaceholder("Name");
     this.emailRegisterInput = this.signUpForm.getByPlaceholder("Email Address");
-    this.newUserSignUpText = this.signUpForm.locator("h2");
     this.signUpButton = this.signUpForm.getByRole("button");
 
     // Sign in form locators
     this.signInForm = this.page.locator(".login-form");
-    this.loginToYourAccountText = this.signInForm.locator("h2");
     this.emailLoginInput = this.signInForm.locator("input[type*='email']");
     this.passwordLoginInput = this.signInForm.locator("input[type='password']");
     this.signInButton = this.signInForm.getByRole("button", { name: "Login" });
-  }
-
-  async verifyNewUserSignUpTextIsVisible() {
-    const isVisible = await this.newUserSignUpText.isVisible();
-    expect(isVisible).toBeTruthy();
-  }
-
-  async verifyLoginToYourAccountTextIsVisible() {
-    const isVisible = await this.loginToYourAccountText.isVisible();
-    expect(isVisible).toBeTruthy();
   }
 
   async signIn(email: string, password: string) {
@@ -48,22 +36,5 @@ export class LoginPage {
     await this.emailRegisterInput.fill(email);
     await this.usernameRegisterInput.fill(name);
     await this.signUpButton.click();
-  }
-
-  async verifyErrorMessageIsVisible(
-    message: string,
-    formType: "sign-in" | "sign-up"
-  ) {
-    let errorMessage: Locator;
-    if (formType === "sign-in") {
-      errorMessage = this.page.locator(".login-form p");
-    } else {
-      errorMessage = this.page.locator(".signup-form p");
-    }
-
-    const isVisible = await errorMessage.isVisible();
-    expect(isVisible).toBeTruthy();
-    const errorText = await errorMessage.textContent();
-    expect(errorText).toContain(message);
   }
 }

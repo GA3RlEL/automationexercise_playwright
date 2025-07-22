@@ -30,7 +30,7 @@ test("Login user with valid credentials", async ({ page }) => {
   await homePage.goToLoginPage();
 
   // Assert that "Login to your account" text is visible
-  await loginPage.verifyLoginToYourAccountTextIsVisible();
+  await loginPage.verifyTextIsVisible("Login to your account");
 
   // Sign in with valid credentials
   await loginPage.signIn(loginUser.email, loginUser.password);
@@ -51,16 +51,13 @@ test("Login user with invalid credentials", async ({ page }) => {
   await homePage.goToLoginPage();
 
   // Assert that "Login to your account" text is visible
-  await loginPage.verifyLoginToYourAccountTextIsVisible();
+  await loginPage.verifyTextIsVisible("Login to your account");
 
   // Sign in with invalid credentials
   await loginPage.signIn(loginUser.email, loginUser.password + "1");
 
   // Assert error message is visible
-  await loginPage.verifyErrorMessageIsVisible(
-    "Your email or password is incorrect!",
-    "sign-in"
-  );
+  await loginPage.verifyTextIsVisible("Your email or password is incorrect!");
 });
 
 test("Logout user", async ({ page }) => {
@@ -75,7 +72,7 @@ test("Logout user", async ({ page }) => {
   await homePage.goToLoginPage();
 
   // Assert that 'Login to your account' is visible
-  await loginPage.verifyLoginToYourAccountTextIsVisible();
+  await loginPage.verifyTextIsVisible("Login to your account");
 
   // Login with valid credentials
   await loginPage.signIn(loginUser.email, loginUser.password);
@@ -87,7 +84,7 @@ test("Logout user", async ({ page }) => {
   await homePage.logoutUser();
 
   // Assert that user is redirected to login page
-  await loginPage.verifyLoginToYourAccountTextIsVisible();
+  await loginPage.verifyTextIsVisible("Login to your account");
 });
 
 test("Register user with existing email", async ({ page }) => {
@@ -102,14 +99,11 @@ test("Register user with existing email", async ({ page }) => {
   await homePage.goToLoginPage();
 
   // Assert that 'New User Signup!' is visible
-  await loginPage.verifyNewUserSignUpTextIsVisible();
+  await loginPage.verifyTextIsVisible("New User Signup!");
 
   // Fill the sign up form with existing email
   await loginPage.signUp(loginUser.email, loginUser.name);
 
   // Assert that 'Email Address already exist!' error message is visible
-  await loginPage.verifyErrorMessageIsVisible(
-    "Email Address already exist!",
-    "sign-up"
-  );
+  await loginPage.verifyTextIsVisible("Email Address already exist!");
 });

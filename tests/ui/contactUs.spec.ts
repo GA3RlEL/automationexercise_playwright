@@ -28,7 +28,7 @@ test("Check Contact us form", async ({ page }) => {
   await homePage.goToContactUsPage();
 
   // Assert that "Get In Touch" text is visible
-  await contactUsPage.verifyIfGetInTouchTextIsVisible();
+  await contactUsPage.verifyTextIsVisible("Get In Touch");
 
   // Fill in the contact form and submit
   await contactUsPage.fillForm(
@@ -49,7 +49,9 @@ test("Check Contact us form", async ({ page }) => {
   await contactUsPage.submitForm();
 
   // Assert that success message is displayed
-  await contactUsPage.confirmSuccessMessage();
+  await contactUsPage.verifyTextIsVisible(
+    "Success! Your details have been submitted successfully."
+  );
 
   // Navigate back to Home page
   await contactUsPage.goToHomePage();
