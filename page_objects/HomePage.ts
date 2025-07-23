@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { BaseTestClass } from "./BaseTestClass";
 
-export class HomePage {
+export class HomePage extends BaseTestClass {
   private loginButton: Locator;
   private navBar: Locator;
   private deleteButton: Locator;
@@ -8,18 +9,14 @@ export class HomePage {
   private contactUsButton: Locator;
   private testCaseButton: Locator;
 
-  constructor(private page: Page) {
+  constructor(page: Page) {
+    super(page);
     this.loginButton = this.page.locator("a[href='/login']");
     this.navBar = this.page.locator(".navbar-nav");
     this.deleteButton = this.page.locator("a[href*='/delete_account']");
     this.logoutButton = this.page.locator("a[href*='/logout']");
     this.contactUsButton = this.page.locator("a[href*='/contact_us']");
     this.testCaseButton = this.page.locator("header a[href='/test_cases']");
-  }
-
-  async isAt() {
-    const url = await this.page.url();
-    await expect(url).toBe("https://automationexercise.com/");
   }
 
   async goToLoginPage() {

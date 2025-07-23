@@ -1,10 +1,11 @@
 import test from "@playwright/test";
 import { POManager } from "../../../page_objects/POManager";
 import { registerUser } from "../../../data/registerUser.json";
+import { BASE_URL } from "../../../constants/constants";
 
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
-  await page.goto("http://automationexercise.com/");
+  await page.goto(BASE_URL);
   await page.waitForLoadState("networkidle");
   // Automatically close window with consent to use your data
   try {
@@ -26,7 +27,7 @@ test("Register user", async ({ page }) => {
   const deleteAccountPage = poManager.getDeleteAccountPage();
 
   // Assert that the page is loaded
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 
   // Navigate to the login page
   await homePage.goToLoginPage();
@@ -38,7 +39,7 @@ test("Register user", async ({ page }) => {
   await loginPage.signUp(registerUser.email, registerUser.name);
 
   // Assert that "ENTER ACCOUNT INFORMATION" text is visible
-  await signupPage.isAt();
+  await signupPage.verifyTextIsVisible("Enter Account Information");
 
   // Fill sign-up form on signup page
   await signupPage.fillSignUpForm(registerUser);
@@ -50,7 +51,7 @@ test("Register user", async ({ page }) => {
   await accountCreatedPage.clickContinue();
 
   // Assert that the user is redirected to the home page
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 
   // Assert that the user is logged in
   await homePage.verifyUserIsLoggedIn(registerUser.name);

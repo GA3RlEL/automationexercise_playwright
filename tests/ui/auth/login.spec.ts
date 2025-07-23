@@ -1,10 +1,11 @@
 import { test } from "@playwright/test";
 import loginUser from "../../../data/loginUser.json";
 import { POManager } from "../../../page_objects/POManager";
+import { BASE_URL } from "../../../constants/constants";
 
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
-  await page.goto("http://automationexercise.com/");
+  await page.goto(BASE_URL);
   await page.waitForLoadState("networkidle");
   // Automatically close window with consent to use your data
   try {
@@ -24,7 +25,7 @@ test("Login user with valid credentials", async ({ page }) => {
   const loginPage = poManager.getLoginPage();
 
   // Assert that the home page is displayed
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 
   // Navigate to the login page
   await homePage.goToLoginPage();
@@ -45,7 +46,7 @@ test("Login user with invalid credentials", async ({ page }) => {
   const loginPage = poManager.getLoginPage();
 
   // Assert that the home page is displayed
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 
   // Navigate to the login page
   await homePage.goToLoginPage();
@@ -66,7 +67,7 @@ test("Logout user", async ({ page }) => {
   const loginPage = poManager.getLoginPage();
 
   // Assert that home page is displayed
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 
   // Navigate to the login screen
   await homePage.goToLoginPage();
@@ -93,7 +94,7 @@ test("Register user with existing email", async ({ page }) => {
   const loginPage = poManager.getLoginPage();
 
   // Assert that home page is visible
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 
   // Navigate to the login page
   await homePage.goToLoginPage();

@@ -1,9 +1,10 @@
 import { test } from "@playwright/test";
 import { POManager } from "../../page_objects/POManager";
+import { BASE_URL } from "../../constants/constants";
 
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
-  await page.goto("http://automationexercise.com/");
+  await page.goto(BASE_URL);
   await page.waitForLoadState("networkidle");
   // Automatically close window with consent to use your data
   try {
@@ -22,7 +23,7 @@ test("Check Contact us form", async ({ page }) => {
   const contactUsPage = poManager.getContactUsPage();
 
   // Assert that Home page is visible
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 
   // Navigate to ContactUs Page
   await homePage.goToContactUsPage();
@@ -57,5 +58,5 @@ test("Check Contact us form", async ({ page }) => {
   await contactUsPage.goToHomePage();
 
   // Assert that Home page is visible again
-  await homePage.isAt();
+  await homePage.isAt(BASE_URL);
 });

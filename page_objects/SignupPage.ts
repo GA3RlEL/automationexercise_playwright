@@ -1,7 +1,8 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { RegisterUser } from "../types/register-user";
+import { BaseTestClass } from "./BaseTestClass";
 
-export class SignupPage {
+export class SignupPage extends BaseTestClass {
   private titleRadio: Locator;
   private passwordInput: Locator;
   private newsletterCheckbox: Locator;
@@ -22,7 +23,8 @@ export class SignupPage {
   private createAccountButton: Locator;
   private enterAccountInformationText: Locator;
 
-  constructor(private page: Page) {
+  constructor(page: Page) {
+    super(page);
     this.titleRadio = this.page.locator(".clearfix");
     this.passwordInput = this.page.locator("#password");
     this.daySelect = this.page.locator("#days");
@@ -46,11 +48,6 @@ export class SignupPage {
     this.enterAccountInformationText = this.page.getByRole("heading", {
       name: "ENTER ACCOUNT INFORMATION",
     });
-  }
-
-  async isAt() {
-    const isVisible = await this.enterAccountInformationText.isVisible();
-    await expect(isVisible).toBeTruthy();
   }
 
   async fillSignUpForm(registerUser: RegisterUser) {

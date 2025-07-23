@@ -8,4 +8,9 @@ export class BaseTestClass {
     const isVisible = await locator.isVisible();
     expect(isVisible).toBeTruthy();
   }
+
+  async isAt(expectedUrl: string) {
+    const currentUrl = this.page.url();
+    expect(currentUrl).toBe(expectedUrl);
+  }
 }
