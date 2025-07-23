@@ -21,7 +21,7 @@ test("Verify all products and product detail page", async ({ page }) => {
   const poManager = new POManager(page);
   const homePage = poManager.getHomePage();
   const productsPage = poManager.getProductsPage();
-  const ProductDetailsPage = poManager.getProductsDetailsPage();
+  const productDetailsPage = poManager.getProductsDetailsPage();
 
   const productIndex = 1;
 
@@ -42,7 +42,8 @@ test("Verify all products and product detail page", async ({ page }) => {
   await productsPage.selectProduct(productIndex);
 
   // Assert that user is redirected to productDetailsPage
-  await ProductDetailsPage.isAt(BASE_URL + `product_details/${productIndex}`);
+  await productDetailsPage.isAt(BASE_URL + `product_details/${productIndex}`);
 
   // Assert that product details are visible
+  await productDetailsPage.areProductDetailsVisible();
 });

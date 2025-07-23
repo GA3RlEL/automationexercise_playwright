@@ -21,7 +21,7 @@ export class ProductDetailsPage extends BaseTestClass {
     this.productBrand = this.page.locator(".product-information p").nth(3);
   }
 
-  async isProductDetailsVisible() {
+  async areProductDetailsVisible() {
     expect(this.productName).toBeVisible();
     expect(this.productCategory).toBeVisible();
     expect(this.productPrice).toBeVisible();
