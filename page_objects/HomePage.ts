@@ -8,6 +8,7 @@ export class HomePage extends BaseTestClass {
   private logoutButton: Locator;
   private contactUsButton: Locator;
   private testCaseButton: Locator;
+  private productsButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -17,6 +18,7 @@ export class HomePage extends BaseTestClass {
     this.logoutButton = this.page.locator("a[href*='/logout']");
     this.contactUsButton = this.page.locator("a[href*='/contact_us']");
     this.testCaseButton = this.page.locator("header a[href='/test_cases']");
+    this.productsButton = this.page.locator("a[href*='/products']");
   }
 
   async goToLoginPage() {
@@ -45,5 +47,9 @@ export class HomePage extends BaseTestClass {
 
   async goToTestCasesPage() {
     await this.testCaseButton.click();
+  }
+
+  async goToProductsPage() {
+    await this.productsButton.click();
   }
 }

@@ -6,6 +6,8 @@ import { AccountCreatedPage } from "./AccountCreatedPage";
 import { DeleteAccountPage } from "./DeleteAccountPage";
 import { ContactUsPage } from "./ContactUsPage";
 import { TestCasePage } from "./TestCasesPage";
+import { ProductsPage } from "./ProductsPage";
+import { ProductDetailsPage } from "./ProductDetailsPage";
 
 export class POManager {
   public homePage: HomePage;
@@ -15,6 +17,8 @@ export class POManager {
   public deleteAccountPage: DeleteAccountPage;
   public contactUsPage: ContactUsPage;
   public testCasesPage: TestCasePage;
+  public productsPage: ProductsPage;
+  public productDetailsPage: ProductDetailsPage;
 
   constructor(private page: Page) {
     this.homePage = new HomePage(this.page);
@@ -24,6 +28,8 @@ export class POManager {
     this.deleteAccountPage = new DeleteAccountPage(this.page);
     this.contactUsPage = new ContactUsPage(this.page);
     this.testCasesPage = new TestCasePage(this.page);
+    this.productsPage = new ProductsPage(this.page);
+    this.productDetailsPage = new ProductDetailsPage(page);
   }
 
   getHomePage(): HomePage {
@@ -52,5 +58,13 @@ export class POManager {
 
   getTestCasesPage(): TestCasePage {
     return this.testCasesPage;
+  }
+
+  getProductsPage(): ProductsPage {
+    return this.productsPage;
+  }
+
+  getProductsDetailsPage(): ProductDetailsPage {
+    return this.productDetailsPage;
   }
 }
