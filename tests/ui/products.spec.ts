@@ -47,3 +47,30 @@ test("Verify all products and product detail page", async ({ page }) => {
   // Assert that product details are visible
   await productDetailsPage.areProductDetailsVisible();
 });
+
+test("Search Product", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const productsPage = poManager.getProductsPage();
+
+  const productName = "top";
+
+  // Assert that home page is displayed
+  await homePage.isAt(BASE_URL);
+
+  // Navigate to products page
+  await homePage.goToProductsPage();
+
+  // Assert that user is redirected to ALL PRODUCTS page
+  await productsPage.isAt(BASE_URL + "products");
+  await productsPage.verifyTextIsVisible("All Products");
+
+  // Search for a product "top"
+  await productsPage.searchProduct(productName);
+
+  // Assert that "SEARCHED PRODUCTS" is visible
+  await productsPage.verifyTextIsVisible("Searched Products");
+
+  // Assert that searched products are releated to the searched term
+  await productsPage.checkSearchedProducts(productName);
+});
