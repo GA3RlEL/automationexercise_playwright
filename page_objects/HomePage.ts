@@ -9,8 +9,7 @@ export class HomePage extends BaseTestClass {
   private contactUsButton: Locator;
   private testCaseButton: Locator;
   private productsButton: Locator;
-  private subscriptionInptut: Locator;
-  private subscriptionButton: Locator;
+  private cartButton: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -21,8 +20,7 @@ export class HomePage extends BaseTestClass {
     this.contactUsButton = this.page.locator("a[href*='/contact_us']");
     this.testCaseButton = this.page.locator("header a[href='/test_cases']");
     this.productsButton = this.page.locator("a[href*='/products']");
-    this.subscriptionInptut = this.page.locator("#susbscribe_email");
-    this.subscriptionButton = this.page.locator("#subscribe");
+    this.cartButton = this.page.locator("header a[href*='/view_cart']");
   }
 
   async goToLoginPage() {
@@ -57,8 +55,7 @@ export class HomePage extends BaseTestClass {
     await this.productsButton.click();
   }
 
-  async proceedSubscription(email: string) {
-    await this.subscriptionInptut.fill(email);
-    await this.subscriptionButton.click();
+  async goToCartPage() {
+    await this.cartButton.click();
   }
 }

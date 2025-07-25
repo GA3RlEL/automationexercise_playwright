@@ -8,6 +8,7 @@ import { ContactUsPage } from "./ContactUsPage";
 import { TestCasePage } from "./TestCasesPage";
 import { ProductsPage } from "./ProductsPage";
 import { ProductDetailsPage } from "./ProductDetailsPage";
+import { CartPage } from "./CartPage";
 
 export class POManager {
   public homePage: HomePage;
@@ -19,6 +20,7 @@ export class POManager {
   public testCasesPage: TestCasePage;
   public productsPage: ProductsPage;
   public productDetailsPage: ProductDetailsPage;
+  public cartPage: CartPage;
 
   constructor(private page: Page) {
     this.homePage = new HomePage(this.page);
@@ -30,6 +32,7 @@ export class POManager {
     this.testCasesPage = new TestCasePage(this.page);
     this.productsPage = new ProductsPage(this.page);
     this.productDetailsPage = new ProductDetailsPage(page);
+    this.cartPage = new CartPage(this.page);
   }
 
   getHomePage(): HomePage {
@@ -66,5 +69,9 @@ export class POManager {
 
   getProductsDetailsPage(): ProductDetailsPage {
     return this.productDetailsPage;
+  }
+
+  getCartPage(): CartPage {
+    return this.cartPage;
   }
 }
