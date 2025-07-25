@@ -74,3 +74,34 @@ test("Search Product", async ({ page }) => {
   // Assert that searched products are releated to the searched term
   await productsPage.checkSearchedProducts(productName);
 });
+
+test("Add products in cart", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const productsPage = poManager.getProductsPage();
+  const cartPage = poManager.getCartPage();
+
+  // Assert that home page is displayed
+  await homePage.isAt(BASE_URL);
+
+  // Navigate to products page
+  await homePage.goToProductsPage();
+
+  // Add first product to cart
+  await productsPage.addProductToCart(1);
+
+  // Continue shopping
+  await productsPage.continueShopping();
+
+  // Add second product to cart
+  const products = await productsPage.addProductToCart(2);
+
+  // Navigate to cart page
+  await productsPage.viewCartModal();
+
+  // Assert that count of products in the cart is correct
+  await cartPage.verifyProductsCount(products.length);
+
+  // Assert that product details are correct
+  await cartPage.verifyProductDetails(products);
+});
