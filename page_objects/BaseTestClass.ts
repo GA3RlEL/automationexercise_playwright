@@ -3,9 +3,24 @@ import { expect, Locator, Page } from "@playwright/test";
 export class BaseTestClass {
   private subscriptionInptut: Locator;
   private subscriptionButton: Locator;
+  private loginButton: Locator;
+  private navBar: Locator;
+  private logoutButton: Locator;
+  private contactUsButton: Locator;
+  private testCaseButton: Locator;
+  private productsButton: Locator;
+  private cartButton: Locator;
+
   constructor(protected page: Page) {
     this.subscriptionInptut = this.page.locator("#susbscribe_email");
     this.subscriptionButton = this.page.locator("#subscribe");
+    this.loginButton = this.page.locator("a[href='/login']");
+    this.navBar = this.page.locator(".navbar-nav");
+    this.logoutButton = this.page.locator("a[href*='/logout']");
+    this.contactUsButton = this.page.locator("a[href*='/contact_us']");
+    this.testCaseButton = this.page.locator("header a[href='/test_cases']");
+    this.productsButton = this.page.locator("a[href*='/products']");
+    this.cartButton = this.page.locator("header a[href*='/view_cart']");
   }
 
   async verifyTextIsVisible(text: string) {
@@ -22,5 +37,37 @@ export class BaseTestClass {
   async proceedSubscription(email: string) {
     await this.subscriptionInptut.fill(email);
     await this.subscriptionButton.click();
+  }
+
+  async goToLoginPage() {
+    await this.loginButton.click();
+  }
+
+  async goToContactUsPage() {
+    await this.contactUsButton.click();
+  }
+
+  async verifyUserIsLoggedIn(username: string) {
+    const userLink = await this.navBar.locator("a").last();
+    const isVisible = await userLink.isVisible();
+    await expect(isVisible).toBeTruthy();
+    const userName = await userLink.textContent();
+    await expect(userName).toMatch("Logged in as " + username);
+  }
+
+  async logoutUser() {
+    await this.logoutButton.click();
+  }
+
+  async goToTestCasesPage() {
+    await this.testCaseButton.click();
+  }
+
+  async goToProductsPage() {
+    await this.productsButton.click();
+  }
+
+  async goToCartPage() {
+    await this.cartButton.click();
   }
 }
