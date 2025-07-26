@@ -6,20 +6,12 @@ export class ProductsPage extends BaseTestClass {
   private products: Locator;
   private searchInput: Locator;
   private searchButton: Locator;
-  private continueShoppingButton: Locator;
-  private viewCartModalButton: Locator;
-
-  private productCart: ProductCart[] = [];
 
   constructor(page: Page) {
     super(page);
     this.products = this.page.locator(".features_items .col-sm-4");
     this.searchInput = this.page.locator("#search_product");
     this.searchButton = this.page.locator("#submit_search");
-    this.continueShoppingButton = this.page.locator(".btn-success");
-    this.viewCartModalButton = this.page.locator(
-      ".modal-content a[href='/view_cart']"
-    );
   }
 
   async checkProductsVisible() {
@@ -41,7 +33,7 @@ export class ProductsPage extends BaseTestClass {
     await viewProductButton.click();
   }
 
-  async addProductToCart(index: number) {
+  async addProductToCart(index: number, productsCart: ProductCart[]) {
     const products = await this.products.all();
     if (index > products.length) {
       throw new Error("Given index of product does not exist in the list");
@@ -64,26 +56,26 @@ export class ProductsPage extends BaseTestClass {
       totalPrice: price,
     };
 
-    this.handleAddToCart(newProduct);
+    productsCart = this.handleAddToCart(newProduct, productsCart);
 
     const addToCartButton = product.locator(".add-to-cart").first();
     await addToCartButton.click();
 
-    return this.productCart;
+    return productsCart;
   }
 
-  handleAddToCart(product: ProductCart) {
-    const existingProduct = this.productCart.find(
-      (p) => p.name === product.name
-    );
+  handleAddToCart(product: ProductCart, pc: ProductCart[]) {
+    let productCart = pc;
+    const existingProduct = productCart.find((p) => p.name === product.name);
 
     if (existingProduct) {
       existingProduct.quantity += 1;
       existingProduct.totalPrice =
         existingProduct.price * existingProduct.quantity;
     } else {
-      this.productCart.push(product);
+      productCart.push(product);
     }
+    return productCart;
   }
 
   async searchProduct(productName: string) {
@@ -102,13 +94,5 @@ export class ProductsPage extends BaseTestClass {
       const prodName = await product.locator(".productinfo p").textContent();
       expect(prodName).toContain(productName);
     }
-  }
-
-  async continueShopping() {
-    await this.continueShoppingButton.click();
-  }
-
-  async viewCartModal() {
-    await this.viewCartModalButton.click();
   }
 }

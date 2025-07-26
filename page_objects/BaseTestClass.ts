@@ -10,6 +10,8 @@ export class BaseTestClass {
   private testCaseButton: Locator;
   private productsButton: Locator;
   private cartButton: Locator;
+  private continueShoppingButton: Locator;
+  private viewCartModalButton: Locator;
 
   constructor(protected page: Page) {
     this.subscriptionInptut = this.page.locator("#susbscribe_email");
@@ -21,6 +23,10 @@ export class BaseTestClass {
     this.testCaseButton = this.page.locator("header a[href='/test_cases']");
     this.productsButton = this.page.locator("a[href*='/products']");
     this.cartButton = this.page.locator("header a[href*='/view_cart']");
+    this.continueShoppingButton = this.page.locator(".btn-success");
+    this.viewCartModalButton = this.page.locator(
+      ".modal-content a[href='/view_cart']"
+    );
   }
 
   async verifyTextIsVisible(text: string) {
@@ -69,5 +75,13 @@ export class BaseTestClass {
 
   async goToCartPage() {
     await this.cartButton.click();
+  }
+
+  async continueShopping() {
+    await this.continueShoppingButton.click();
+  }
+
+  async viewCartModal() {
+    await this.viewCartModalButton.click();
   }
 }

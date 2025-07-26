@@ -1,6 +1,7 @@
 import { test } from "@playwright/test";
 import { POManager } from "../../page_objects/POManager";
 import { BASE_URL } from "../../constants/constants";
+import { ProductCart } from "../../types/productCart";
 
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
@@ -81,6 +82,8 @@ test("Add products in cart", async ({ page }) => {
   const productsPage = poManager.getProductsPage();
   const cartPage = poManager.getCartPage();
 
+  let products: ProductCart[] = [];
+
   // Assert that home page is displayed
   await homePage.isAt(BASE_URL);
 
@@ -88,19 +91,52 @@ test("Add products in cart", async ({ page }) => {
   await homePage.goToProductsPage();
 
   // Add first product to cart
-  await productsPage.addProductToCart(1);
+  await productsPage.addProductToCart(1, products);
 
   // Continue shopping
   await productsPage.continueShopping();
 
   // Add second product to cart
-  const products = await productsPage.addProductToCart(2);
+  products = await productsPage.addProductToCart(2, products);
 
   // Navigate to cart page
   await productsPage.viewCartModal();
 
   // Assert that count of products in the cart is correct
   await cartPage.verifyProductsCount(products.length);
+
+  // Assert that product details are correct
+  await cartPage.verifyProductDetails(products);
+});
+
+test("Verify product quantity in cart", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const productsPage = poManager.getProductsPage();
+  const productDetailsPage = poManager.getProductsDetailsPage();
+  const cartPage = poManager.getCartPage();
+
+  const productIndex = 1;
+  const quantity = 4;
+  let products: ProductCart[] = [];
+
+  // Assert that home page is displayed
+  await homePage.isAt(BASE_URL);
+
+  // Navigate to products page
+  await homePage.goToProductsPage();
+
+  // Click 'View product' button for the first product
+  await productsPage.selectProduct(productIndex);
+
+  // Assert that product details page is displayed
+  await productsPage.isAt(BASE_URL + "product_details/" + productIndex);
+
+  // Inrease quantity to 4 and add the product to cart
+  products = await productDetailsPage.addProductToCart(quantity, products);
+
+  // Navigate to cart page
+  await productDetailsPage.viewCartModal();
 
   // Assert that product details are correct
   await cartPage.verifyProductDetails(products);
