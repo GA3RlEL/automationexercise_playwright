@@ -12,6 +12,7 @@ export class BaseTestClass {
   private cartButton: Locator;
   private continueShoppingButton: Locator;
   private viewCartModalButton: Locator;
+  private deleteButton: Locator;
 
   constructor(protected page: Page) {
     this.subscriptionInptut = this.page.locator("#susbscribe_email");
@@ -27,6 +28,7 @@ export class BaseTestClass {
     this.viewCartModalButton = this.page.locator(
       ".modal-content a[href='/view_cart']"
     );
+    this.deleteButton = this.page.locator("a[href*='/delete_account']");
   }
 
   async verifyTextIsVisible(text: string) {
@@ -83,5 +85,9 @@ export class BaseTestClass {
 
   async viewCartModal() {
     await this.viewCartModalButton.click();
+  }
+
+  async deleteAccount() {
+    await this.deleteButton.click();
   }
 }

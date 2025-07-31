@@ -4,10 +4,16 @@ import { ProductCart } from "../types/productCart";
 
 export class CartPage extends BaseTestClass {
   private products: Locator;
+  private proceedToCheckoutButton: Locator;
+  private modalRegisterLoginButton: Locator;
 
   constructor(page: Page) {
     super(page);
     this.products = this.page.locator("tbody tr");
+    this.proceedToCheckoutButton = this.page.locator(".check_out");
+    this.modalRegisterLoginButton = this.page.locator(
+      ".modal-dialog a[href*='/login']"
+    );
   }
 
   async verifyProductsCount(expectedCount: number) {
@@ -48,5 +54,13 @@ export class CartPage extends BaseTestClass {
       expect(quantity).toBe(products[i].quantity);
       expect(totalPrice).toBe(products[i].totalPrice);
     }
+  }
+
+  async proceedToCheckout() {
+    await this.proceedToCheckoutButton.click();
+  }
+
+  async goToLoginPageModal() {
+    await this.modalRegisterLoginButton.click();
   }
 }

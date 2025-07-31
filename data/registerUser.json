@@ -17,5 +17,27 @@
     "state": "Test State",
     "zipCode": "12345",
     "mobileNumber": "1234567890"
+  },
+
+  "registerUserDeliveryData": {
+    "title": "Mr.",
+    "firstName": "Test",
+    "lastName": "User",
+    "company": "Test Company",
+    "address1": "123 Test St",
+    "address2": "Suite 456",
+    "country": "Canada",
+    "city": "Test City",
+    "state": "Test State",
+    "zipCode": "12345",
+    "mobileNumber": "1234567890"
+  },
+
+  "registerUserPaymentData": {
+    "nameOnCard": "Test User",
+    "cardNumber": "4111111111111111",
+    "cvc": "123",
+    "expiryMonth": "12",
+    "expiryYear": "2025"
   }
 }

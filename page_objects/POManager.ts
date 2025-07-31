@@ -9,6 +9,9 @@ import { TestCasePage } from "./TestCasesPage";
 import { ProductsPage } from "./ProductsPage";
 import { ProductDetailsPage } from "./ProductDetailsPage";
 import { CartPage } from "./CartPage";
+import { CheckoutPage } from "./CheckoutPage";
+import { PaymentPage } from "./PaymentPage";
+import { PaymentDonePage } from "./PaymentDonePage";
 
 export class POManager {
   public homePage: HomePage;
@@ -21,6 +24,9 @@ export class POManager {
   public productsPage: ProductsPage;
   public productDetailsPage: ProductDetailsPage;
   public cartPage: CartPage;
+  public checkoutPage: CheckoutPage;
+  public paymentPage: PaymentPage;
+  public paymentDonePage: PaymentDonePage;
 
   constructor(private page: Page) {
     this.homePage = new HomePage(this.page);
@@ -33,6 +39,9 @@ export class POManager {
     this.productsPage = new ProductsPage(this.page);
     this.productDetailsPage = new ProductDetailsPage(page);
     this.cartPage = new CartPage(this.page);
+    this.checkoutPage = new CheckoutPage(this.page);
+    this.paymentPage = new PaymentPage(this.page);
+    this.paymentDonePage = new PaymentDonePage(this.page);
   }
 
   getHomePage(): HomePage {
@@ -73,5 +82,16 @@ export class POManager {
 
   getCartPage(): CartPage {
     return this.cartPage;
+  }
+
+  getCheckoutPage(): CheckoutPage {
+    return this.checkoutPage;
+  }
+  getPaymentPage(): PaymentPage {
+    return this.paymentPage;
+  }
+
+  getPaymentDonePage(): PaymentDonePage {
+    return this.paymentDonePage;
   }
 }
