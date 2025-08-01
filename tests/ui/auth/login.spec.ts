@@ -1,5 +1,5 @@
 import { test } from "@playwright/test";
-import loginUser from "../../../data/loginUser.json";
+import { loginUser } from "../../../data/loginUser.json";
 import { POManager } from "../../../page_objects/POManager";
 import { BASE_URL } from "../../../constants/constants";
 

@@ -1,5 +1,29 @@
 {
-  "email": "test121311@test.com",
-  "password": "Test123!",
-  "name": "test"
+  "loginUser": {
+    "email": "test121311@test.com",
+    "password": "Test123!",
+    "name": "test"
+  },
+
+  "loginUserDeliveryData": {
+    "title": "Mr.",
+    "firstName": "firstName",
+    "lastName": "lastName",
+    "company": "company",
+    "address1": "address",
+    "address2": "address_2",
+    "country": "United States",
+    "city": "City",
+    "state": "State",
+    "zipCode": "zipCode",
+    "mobileNumber": "123456789"
+  },
+
+  "loginUserPaymentData": {
+    "nameOnCard": "Test User",
+    "cardNumber": "4111111111111111",
+    "cvc": "123",
+    "expiryMonth": "12",
+    "expiryYear": "2025"
+  }
 }

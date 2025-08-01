@@ -7,6 +7,11 @@ import {
   registerUserDeliveryData,
   registerUserPaymentData,
 } from "../../data/registerUser.json";
+import {
+  loginUser,
+  loginUserDeliveryData,
+  loginUserPaymentData,
+} from "../../data/loginUser.json";
 
 test.describe.configure({ mode: "serial" });
 
@@ -205,4 +210,83 @@ test("Place order: Register before checkout", async ({ page }) => {
   // Assert that "ACCOUNT DELETED!" message is visible and click continue
   await deleteAccountPage.isAt();
   await deleteAccountPage.clickContinue();
+});
+
+// In this test deleting account is omitted
+test("Place order: login before checkout", async ({ page }) => {
+  const poManager = new POManager(page);
+  const loginPage = poManager.getLoginPage();
+  const signUpPage = poManager.getSignupPage();
+  const accountCreatedPage = poManager.getAccountCreatedPage();
+  const homePage = poManager.getHomePage();
+  const productsPage = poManager.getProductsPage();
+  const cartPage = poManager.getCartPage();
+  const checkoutPage = poManager.getCheckoutPage();
+  const paymentPage = poManager.getPaymentPage();
+  const deleteAccountPage = poManager.getDeleteAccountPage();
+  const paymentDonePage = poManager.getPaymentDonePage();
+
+  let productsCart: ProductCart[] = [];
+
+  // Assert that home page is visible
+  await homePage.isAt(BASE_URL);
+
+  // Navigate to login page
+  await homePage.goToLoginPage();
+
+  // Assert user is redirected to login page
+  await loginPage.isAt(BASE_URL + "login");
+
+  // Login with existing user
+  await loginPage.signIn(loginUser.email, loginUser.password);
+
+  // Assert that logged user is visible on the menu
+  await homePage.verifyUserIsLoggedIn(loginUser.name);
+
+  // Navigate to products page
+  await homePage.goToProductsPage();
+
+  // Assert that products page is visible
+  await productsPage.isAt(BASE_URL + "products");
+
+  // Add one item to cart
+  productsCart = await productsPage.addProductToCart(1, productsCart);
+
+  // Close modal window after adding product to cart
+  await productsPage.continueShopping();
+
+  // Navigate to Cart
+  await productsPage.goToCartPage();
+
+  // Assert that user is redirected to Cart page
+  await cartPage.isAt(BASE_URL + "view_cart");
+
+  // Proceed with checkout
+  await cartPage.proceedToCheckout();
+
+  // Assert that checkout page is visible
+  await checkoutPage.isAt(BASE_URL + "checkout");
+
+  // Assert that delivery data is correct and cart items matches
+  await checkoutPage.verifyAddressDeliveryInfo(loginUserDeliveryData);
+  await checkoutPage.verifyProductDetails(productsCart);
+
+  // Fill text area with message
+  await checkoutPage.fillTextArea("This is a test message");
+
+  // Place order
+  await checkoutPage.placeOrder();
+
+  // Assert that user is redirected to payment page
+  await paymentPage.isAt(BASE_URL + "payment");
+
+  // Fill payment data and proceed
+  await paymentPage.fillPaymentDetailsAndConfirm(loginUserPaymentData);
+
+  // Assert that user is redirected to payment done page
+  await paymentDonePage.isAt(BASE_URL + "payment_done/500");
+
+  await paymentDonePage.verifyTextIsVisible(
+    "Congratulations! Your order has been confirmed!"
+  );
 });
