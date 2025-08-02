@@ -63,4 +63,49 @@ export class CartPage extends BaseTestClass {
   async goToLoginPageModal() {
     await this.modalRegisterLoginButton.click();
   }
+
+  async removeProductFromCart(productName: string, products: ProductCart[]) {
+    const allProducts = await this.products.all();
+    let productToRemove: Locator | undefined;
+
+    for (const p of allProducts) {
+      const name = await p.locator("h4").textContent();
+      if (name === productName) {
+        productToRemove = p;
+        break;
+      }
+    }
+
+    if (!productToRemove) {
+      throw new Error(
+        "Product with following name " +
+          productName +
+          " was not found in the cart"
+      );
+    }
+
+    const updatedProducts = products.filter((p) => p.name !== productName);
+    await productToRemove.locator(".cart_quantity_delete").click();
+
+    return updatedProducts;
+  }
+
+  async verifyProductRemovedFromCart(productName: string) {
+    const allProducts = await this.products.all();
+    let found = false;
+
+    for (const p of allProducts) {
+      const name = await p.locator("h4").textContent();
+      if (name === productName) {
+        found = true;
+        break;
+      }
+    }
+
+    if (found) {
+      throw new Error(
+        "Product with name " + productName + " was not removed from the cart"
+      );
+    }
+  }
 }

@@ -216,14 +216,11 @@ test("Place order: Register before checkout", async ({ page }) => {
 test("Place order: login before checkout", async ({ page }) => {
   const poManager = new POManager(page);
   const loginPage = poManager.getLoginPage();
-  const signUpPage = poManager.getSignupPage();
-  const accountCreatedPage = poManager.getAccountCreatedPage();
   const homePage = poManager.getHomePage();
   const productsPage = poManager.getProductsPage();
   const cartPage = poManager.getCartPage();
   const checkoutPage = poManager.getCheckoutPage();
   const paymentPage = poManager.getPaymentPage();
-  const deleteAccountPage = poManager.getDeleteAccountPage();
   const paymentDonePage = poManager.getPaymentDonePage();
 
   let productsCart: ProductCart[] = [];
