@@ -227,3 +227,40 @@ test("Search products and Verify cart after login", async ({ page }) => {
   // Assert that product details are correct
   await cartPage.verifyProductDetails(productsCart);
 });
+
+test("Add review to product", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const productsPage = poManager.getProductsPage();
+  const productDetailsPage = poManager.getProductsDetailsPage();
+
+  const productIndex = 1;
+
+  // Assert that home page is displayed
+  await homePage.isAt(BASE_URL);
+
+  // Navigate to products page
+  await homePage.goToProductsPage();
+
+  // Assert that user is redirected to ALL PRODUCTS page
+  await productsPage.isAt(BASE_URL + "products");
+
+  // Select first product
+  await productsPage.selectProduct(productIndex);
+
+  // Assert that user is redirected to productDetailsPage
+  await productDetailsPage.isAt(BASE_URL + "product_details/" + productIndex);
+
+  // Assert that "Write Your Review" text is visible
+  await productDetailsPage.verifyTextIsVisible("Write Your Review");
+
+  // Add review to product
+  await productDetailsPage.writeReview(
+    "test",
+    "test@test.com",
+    "This is a test review"
+  );
+
+  // Assert that "Thank you for your review." text is visible
+  await productDetailsPage.verifyTextIsVisible("Thank you for your review.");
+});

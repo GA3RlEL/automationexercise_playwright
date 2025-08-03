@@ -12,6 +12,12 @@ export class ProductDetailsPage extends BaseTestClass {
   private quantityInput: Locator;
   private addToCartButton: Locator;
 
+  // Locators for product review
+  private reviewNameInput: Locator;
+  private reviewEmailInput: Locator;
+  private reviewTextInput: Locator;
+  private reviewSubmitButton: Locator;
+
   constructor(page: Page) {
     super(page);
     this.productName = this.page.locator(".product-information h2");
@@ -26,6 +32,19 @@ export class ProductDetailsPage extends BaseTestClass {
     this.addToCartButton = this.page.getByRole("button", {
       name: "Add to cart",
     });
+
+    // Locators for product review
+    this.reviewNameInput = this.page.locator("#name");
+    this.reviewEmailInput = this.page.locator("#email");
+    this.reviewTextInput = this.page.locator("#review");
+    this.reviewSubmitButton = this.page.locator("#button-review");
+  }
+
+  async writeReview(name: string, email: string, reviewText: string) {
+    await this.reviewNameInput.fill(name);
+    await this.reviewEmailInput.fill(email);
+    await this.reviewTextInput.fill(reviewText);
+    await this.reviewSubmitButton.click();
   }
 
   async addProductToCart(quantity: number, productsCart: ProductCart[]) {
