@@ -6,12 +6,14 @@ export class ProductsPage extends BaseTestClass {
   private products: Locator;
   private searchInput: Locator;
   private searchButton: Locator;
+  private brandsBox: Locator;
 
   constructor(page: Page) {
     super(page);
     this.products = this.page.locator(".features_items .col-sm-4");
     this.searchInput = this.page.locator("#search_product");
     this.searchButton = this.page.locator("#submit_search");
+    this.brandsBox = this.page.locator(".brands_products");
   }
 
   async checkProductsVisible() {
@@ -94,5 +96,15 @@ export class ProductsPage extends BaseTestClass {
       const prodName = await product.locator(".productinfo p").textContent();
       expect(prodName).toContain(productName);
     }
+  }
+
+  async selectBrabd(brandName: string) {
+    const brand = this.brandsBox.getByText(
+      brandName[0].toUpperCase() + brandName.slice(1)
+    );
+    if (!brand) {
+      throw new Error(`Brand ${brandName} not found in the brands box`);
+    }
+    await brand.click();
   }
 }

@@ -141,3 +141,30 @@ test("Verify product quantity in cart", async ({ page }) => {
   // Assert that product details are correct
   await cartPage.verifyProductDetails(products);
 });
+
+test("View & Cart Brand products", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const productsPage = poManager.getProductsPage();
+
+  // Assert that home page is displayed
+  await homePage.isAt(BASE_URL);
+
+  // Navigate to products page
+  await homePage.goToProductsPage();
+
+  // Assert that products page is displayed
+  await productsPage.isAt(BASE_URL + "products");
+
+  // Click on "POLO" brand
+  await productsPage.selectBrabd("Polo");
+
+  // Assert that "Brand - Polo Products" text is visible
+  await productsPage.verifyTextIsVisible("Brand - Polo Products");
+
+  // Click on "H&M" brand
+  await productsPage.selectBrabd("H&M");
+
+  // Assert that "Brand - H&M Products" text is visible
+  await productsPage.verifyTextIsVisible("Brand - H&M Products");
+});
