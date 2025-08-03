@@ -2,6 +2,7 @@ import { test } from "@playwright/test";
 import { BASE_URL } from "../../constants/constants";
 import { POManager } from "../../page_objects/POManager";
 import { categories } from "../../types/categories";
+import { ProductCart } from "../../types/productCart";
 
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
@@ -47,4 +48,28 @@ test("View category products", async ({ page }) => {
 
   // Assert that "Men - Tshirts Products" text is visible
   await homePage.verifyTextIsVisible("Men - Tshirts Products");
+});
+
+test("Add to cart from recommended items", async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const cartPage = poManager.getCartPage();
+
+  let products: ProductCart[] = [];
+
+  // Assert that home page is visible
+  await homePage.isAt(BASE_URL);
+
+  // Assert that "recommended items" text is visible
+  await homePage.verifyTextIsVisible("recommended items");
+
+  // Add first recommended item to cart
+  products = await homePage.addItemToCartFromRecommended(1, products);
+
+  // Assert that cart page is visible
+  await cartPage.isAt(BASE_URL + "view_cart");
+
+  // Assert that the product is added to cart
+  await cartPage.verifyProductsCount(products.length);
+  await cartPage.verifyProductDetails(products);
 });
