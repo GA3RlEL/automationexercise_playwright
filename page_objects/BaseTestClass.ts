@@ -17,7 +17,7 @@ export class BaseTestClass {
   constructor(protected page: Page) {
     this.subscriptionInptut = this.page.locator("#susbscribe_email");
     this.subscriptionButton = this.page.locator("#subscribe");
-    this.loginButton = this.page.locator("a[href='/login']");
+    this.loginButton = this.page.locator("a[href='/login']").first();
     this.navBar = this.page.locator(".navbar-nav");
     this.logoutButton = this.page.locator("a[href*='/logout']");
     this.contactUsButton = this.page.locator("a[href*='/contact_us']");

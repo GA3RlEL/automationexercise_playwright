@@ -24,6 +24,20 @@ export class ProductsPage extends BaseTestClass {
     }
   }
 
+  async addAllSearchedProductsToCart(productsCart: ProductCart[]) {
+    const products = await this.products.all();
+    if (products.length === 0) {
+      throw new Error("No products found to add to cart");
+    }
+
+    for (let i = 0; i < products.length; i++) {
+      productsCart = await this.addProductToCart(i + 1, productsCart);
+      await this.continueShopping();
+    }
+
+    return productsCart;
+  }
+
   async selectProduct(index: number) {
     const products = await this.products.all();
     if (index > products.length) {
