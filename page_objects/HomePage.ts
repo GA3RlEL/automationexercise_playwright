@@ -28,14 +28,9 @@ export class HomePage extends BaseTestClass {
       .locator(".active .single-products")
       .all();
 
-    console.log(recommendedItems);
-    console.log(recommendedItems.length);
     if (index > recommendedItems.length) {
       throw new Error("Given index of recommended item does not exist");
     }
-
-    console.log(recommendedItems);
-    console.log(recommendedItems.length);
 
     const item = recommendedItems[index - 1];
     const name = await item.locator("p").first().textContent();
