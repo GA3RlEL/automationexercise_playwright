@@ -1,4 +1,4 @@
-import { test } from "@playwright/test";
+import { expect, test } from "@playwright/test";
 import { BASE_URL } from "../../constants/constants";
 import { POManager } from "../../page_objects/POManager";
 import { ProductCart } from "../../types/productCart";
@@ -286,4 +286,102 @@ test("Place order: login before checkout", async ({ page }) => {
   await paymentDonePage.verifyTextIsVisible(
     "Congratulations! Your order has been confirmed!"
   );
+});
+
+test("Download Invoice after purchase order", async ({ page }) => {
+  const poManager = new POManager(page);
+  const loginPage = poManager.getLoginPage();
+  const signUpPage = poManager.getSignupPage();
+  const accountCreatedPage = poManager.getAccountCreatedPage();
+  const homePage = poManager.getHomePage();
+  const productsPage = poManager.getProductsPage();
+  const cartPage = poManager.getCartPage();
+  const checkoutPage = poManager.getCheckoutPage();
+  const paymentPage = poManager.getPaymentPage();
+  const deleteAccountPage = poManager.getDeleteAccountPage();
+  const paymentDonePage = poManager.getPaymentDonePage();
+
+  let productsCart: ProductCart[] = [];
+
+  // Assert that home page is visible
+  await homePage.isAt(BASE_URL);
+
+  // Navigate to login page
+  await homePage.goToLoginPage();
+
+  // Assert user is redirected to login page
+  await loginPage.isAt(BASE_URL + "login");
+
+  // Register new user
+  await loginPage.signUp(registerUser.email, registerUser.name);
+  await signUpPage.fillSignUpForm(registerUser);
+
+  // Assert that "Account Created" text is visible
+  await accountCreatedPage.isAt();
+  await accountCreatedPage.clickContinue();
+
+  // Assert that logged user is visible on the menu
+  await homePage.verifyUserIsLoggedIn(registerUser.name);
+
+  // Navigate to products page
+  await homePage.goToProductsPage();
+
+  // Assert that products page is visible
+  await productsPage.isAt(BASE_URL + "products");
+
+  // Add one item to cart
+  productsCart = await productsPage.addProductToCart(1, productsCart);
+
+  // Close modal window after adding product to cart
+  await productsPage.continueShopping();
+
+  // Navigate to Cart
+  await productsPage.goToCartPage();
+
+  // Assert that user is redirected to Cart page
+  await cartPage.isAt(BASE_URL + "view_cart");
+
+  // Proceed with checkout
+  await cartPage.proceedToCheckout();
+
+  // Assert that checkout page is visible
+  await checkoutPage.isAt(BASE_URL + "checkout");
+
+  // Assert that delivery data is correct and cart items matches
+  await checkoutPage.verifyAddressDeliveryInfo(registerUserDeliveryData);
+  await checkoutPage.verifyProductDetails(productsCart);
+
+  // Fill text area with message
+  await checkoutPage.fillTextArea("This is a test message");
+
+  // Place order
+  await checkoutPage.placeOrder();
+
+  // Assert that user is redirected to payment page
+  await paymentPage.isAt(BASE_URL + "payment");
+
+  // Fill payment data and proceed
+  await paymentPage.fillPaymentDetailsAndConfirm(registerUserPaymentData);
+
+  // Assert that user is redirected to payment done page
+  await paymentDonePage.isAt(BASE_URL + "payment_done/500");
+  await paymentDonePage.verifyTextIsVisible(
+    "Congratulations! Your order has been confirmed!"
+  );
+
+  // Download invoice and wait for it to complete
+  const [download] = await Promise.all([
+    page.waitForEvent("download"),
+    paymentDonePage.downloadInvoice(),
+  ]);
+
+  const downloadPath = await download.path();
+  expect(downloadPath).toBeDefined();
+
+  // Delete user account
+  await paymentDonePage.deleteAccount();
+
+  // Assert that "ACCOUNT DELETED!" message is visible and click continue
+  await deleteAccountPage.isAt();
+  await deleteAccountPage.clickContinue();
 });
