@@ -55,7 +55,7 @@ test("Search Product", async ({ page }) => {
   const homePage = poManager.getHomePage();
   const productsPage = poManager.getProductsPage();
 
-  const productName = "top";
+  const productName = "Top";
 
   // Assert that home page is displayed
   await homePage.isAt(BASE_URL);
