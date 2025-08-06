@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "api-test": "playwright test ./tests/api --project=apiTesting"
+    "test:api": "playwright test ./tests/api --project=apiTesting && allure serve allure-results",
+    "test:ui:chromium": "playwright test ./tests/ui --project=chromium && allure serve allure-results",
+    "report:open": "allure serve allure-results"
   },
   "keywords": [],
   "author": "",
@@ -11,6 +13,8 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.54.0",
-    "@types/node": "^24.0.13"
+    "@types/node": "^24.0.13",
+    "allure-commandline": "^2.34.1",
+    "allure-playwright": "^3.3.3"
   }
 }

@@ -5,7 +5,7 @@ export default defineConfig({
   fullyParallel: true,
   retries: 1,
   workers: 4,
-  reporter: "html",
+  reporter: [["line"], ["allure-playwright"]],
   use: {
     trace: "on-first-retry",
   },
