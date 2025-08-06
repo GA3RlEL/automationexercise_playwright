@@ -1,8 +1,8 @@
 import { test } from "@playwright/test";
-import { BASE_URL } from "../../constants/constants";
-import { POManager } from "../../page_objects/POManager";
-import { categories } from "../../types/categories";
-import { ProductCart } from "../../types/productCart";
+import { BASE_URL } from "../../../constants/constants";
+import { POManager } from "../../../page_objects/POManager";
+import { categories } from "../../../types/categories";
+import { ProductCart } from "../../../types/productCart";
 
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page

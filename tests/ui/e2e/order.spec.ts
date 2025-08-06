@@ -1,17 +1,17 @@
 import { expect, test } from "@playwright/test";
-import { BASE_URL } from "../../constants/constants";
-import { POManager } from "../../page_objects/POManager";
-import { ProductCart } from "../../types/productCart";
+import { BASE_URL } from "../../../constants/constants";
+import { POManager } from "../../../page_objects/POManager";
+import { ProductCart } from "../../../types/productCart";
 import {
   registerUser,
   registerUserDeliveryData,
   registerUserPaymentData,
-} from "../../data/registerUser.json";
+} from "../../../data/registerUser.json";
 import {
   loginUser,
   loginUserDeliveryData,
   loginUserPaymentData,
-} from "../../data/loginUser.json";
+} from "../../../data/loginUser.json";
 
 test.describe.configure({ mode: "serial" });
 
