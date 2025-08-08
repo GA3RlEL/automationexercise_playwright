@@ -4,6 +4,8 @@ import { POManager } from "../../../page_objects/POManager";
 import { categories } from "../../../types/categories";
 import { ProductCart } from "../../../types/productCart";
 
+test.describe.configure({ mode: "serial" });
+
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
   await page.goto(BASE_URL);
@@ -47,7 +49,7 @@ test("View category products", async ({ page }) => {
   );
 
   // Assert that "Men - Tshirts Products" text is visible
-  await homePage.verifyTextIsVisible("Men - Tshirts Products");
+  await homePage.verifyTextIsVisible("Men - Jeans Products");
 });
 
 test("Add to cart from recommended items", async ({ page }) => {

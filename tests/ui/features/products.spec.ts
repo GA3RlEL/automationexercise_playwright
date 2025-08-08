@@ -55,7 +55,7 @@ test("Search Product", async ({ page }) => {
   const homePage = poManager.getHomePage();
   const productsPage = poManager.getProductsPage();
 
-  const productName = "Top";
+  const productName = "Kids";
 
   // Assert that home page is displayed
   await homePage.isAt(BASE_URL);
@@ -67,7 +67,7 @@ test("Search Product", async ({ page }) => {
   await productsPage.isAt(BASE_URL + "products");
   await productsPage.verifyTextIsVisible("All Products");
 
-  // Search for a product "top"
+  // Search for a product "Kids"
   await productsPage.searchProduct(productName);
 
   // Assert that "SEARCHED PRODUCTS" is visible
@@ -263,4 +263,14 @@ test("Add review to product", async ({ page }) => {
 
   // Assert that "Thank you for your review." text is visible
   await productDetailsPage.verifyTextIsVisible("Thank you for your review.");
+});
+
+test.afterEach(async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const cartPage = poManager.getCartPage();
+
+  // Clear cart after each test
+  await homePage.goToCartPage();
+  await cartPage.clearCart();
 });

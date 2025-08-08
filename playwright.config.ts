@@ -3,8 +3,8 @@ import { defineConfig, devices } from "@playwright/test";
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
-  retries: 1,
-  workers: 4,
+  // retries: 1,
+  workers: 2,
   reporter: [["line"], ["allure-playwright"]],
   use: {
     trace: "on-first-retry",

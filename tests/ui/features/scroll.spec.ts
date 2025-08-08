@@ -2,6 +2,8 @@ import { test } from "@playwright/test";
 import { POManager } from "../../../page_objects/POManager";
 import { BASE_URL } from "../../../constants/constants";
 
+test.describe.configure({ mode: "serial" });
+
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
   await page.goto(BASE_URL);

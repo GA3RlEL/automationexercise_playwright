@@ -385,3 +385,13 @@ test("Download Invoice after purchase order", async ({ page }) => {
   await deleteAccountPage.isAt();
   await deleteAccountPage.clickContinue();
 });
+
+test.afterEach(async ({ page }) => {
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  const cartPage = poManager.getCartPage();
+
+  // Clear cart after each test
+  await homePage.goToCartPage();
+  await cartPage.clearCart();
+});

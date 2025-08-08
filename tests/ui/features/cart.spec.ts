@@ -3,6 +3,8 @@ import { POManager } from "../../../page_objects/POManager";
 import { BASE_URL } from "../../../constants/constants";
 import { ProductCart } from "../../../types/productCart";
 
+test.describe.configure({ mode: "serial" });
+
 test.beforeEach(async ({ page }) => {
   // Navigate to the home page
   await page.goto(BASE_URL);

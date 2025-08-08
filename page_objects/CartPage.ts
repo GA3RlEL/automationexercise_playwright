@@ -108,4 +108,17 @@ export class CartPage extends BaseTestClass {
       );
     }
   }
+
+  async clearCart() {
+    await this.page.waitForLoadState("networkidle");
+    const allProducts = await this.products.all();
+
+    if (allProducts.length === 0) {
+      return; // No products to remove
+    }
+
+    for (const p of allProducts) {
+      await p.locator(".cart_quantity_delete").click();
+    }
+  }
 }
