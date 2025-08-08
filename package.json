@@ -5,7 +5,10 @@
   "scripts": {
     "test:api": "playwright test ./tests/api --project=apiTesting && allure serve allure-results",
     "test:ui:chromium": "playwright test ./tests/ui --project=chromium && allure serve allure-results",
-    "report:open": "allure serve allure-results"
+    "report:open": "allure serve allure-results",
+
+    "test:api:ci": "playwright test ./tests/api --project=apiTesting",
+    "test:ui:chromium:ci": "playwright test ./tests/ui --project=chromium"
   },
   "keywords": [],
   "author": "",
