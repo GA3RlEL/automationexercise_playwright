@@ -3,7 +3,18 @@ import { POManager } from "../../../page_objects/POManager";
 import { registerUser } from "../../../data/registerUser.json";
 import { BASE_URL } from "../../../constants/constants";
 
-test.beforeEach(async ({ page }) => {
+test.beforeEach(async ({ page, request }) => {
+  // Make a request to remove user if it exists
+  const response = await request.delete(`${BASE_URL}api/deleteAccount`, {
+    form: { email: registerUser.email, password: registerUser.password },
+  });
+  const body = await response.json();
+  if (body.responseCode === 200) {
+    console.log("User deleted successfully");
+  } else {
+    console.log("No user to delete or deletion failed");
+  }
+
   const poManager = new POManager(page);
   const homePage = poManager.getHomePage();
   await homePage.navigateToHomeAndDismissConsent();

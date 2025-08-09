@@ -1,6 +1,7 @@
 import { test } from "@playwright/test";
 import { POManager } from "../../../page_objects/POManager";
 import { BASE_URL } from "../../../constants/constants";
+import path from "path";
 test.describe.configure({ mode: "serial" });
 
 test.beforeEach(async ({ page }) => {
@@ -24,22 +25,24 @@ test("Check Contact us form", async ({ page }) => {
   await contactUsPage.verifyTextIsVisible("Get In Touch");
 
   // Fill in the contact form and submit
+  const filePath = path.resolve(__dirname, "../../../data/testFile.txt");
   await contactUsPage.fillForm(
     "John Doe",
     "test@test.com",
     "Test Subject",
     "This is a test message",
-    "C:/Users/krusz/Desktop/git/automationexercise_playwright/data/testFile.txt"
+    filePath
   );
 
   // Wait for js to load
   await page.waitForTimeout(1000);
 
-  // Wait for dialog to appear
-  await page.on("dialog", async (dialog) => dialog.accept());
-
-  // Submit the form
-  await contactUsPage.submitForm();
+  await Promise.all([
+    // Wait for dialog to appear
+    await page.on("dialog", async (dialog) => dialog.accept()),
+    // Submit the form
+    await contactUsPage.submitForm(),
+  ]);
 
   // Assert that success message is displayed
   await contactUsPage.verifyTextIsVisible(
