@@ -25,12 +25,15 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run API tests for CI
+        if: always()
         run: npm run test:api:ci
 
       - name: Run UI tests for CI
+        if: always()
         run: npm run test:ui:chromium:ci
 
       - name: Upload test results
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-results
