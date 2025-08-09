@@ -1,5 +1,7 @@
 import test, { expect } from "@playwright/test";
 
+test.describe.configure({ mode: "serial" });
+
 // IMORTANT EVERY REQUEST HAS RESPONSE STATUS CODE 200
 
 test("POST to verify login with valid credentials", async ({ request }) => {
