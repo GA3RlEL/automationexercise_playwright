@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from "@playwright/test";
+import { BASE_URL } from "../constants/constants";
 
 export class BaseTestClass {
   private subscriptionInptut: Locator;
@@ -29,6 +30,21 @@ export class BaseTestClass {
       ".modal-content a[href='/view_cart']"
     );
     this.deleteButton = this.page.locator("a[href*='/delete_account']");
+  }
+
+  async navigateToHomeAndDismissConsent() {
+    // Navigate to the home page
+    await this.page.goto(BASE_URL);
+    await this.page.waitForLoadState("networkidle");
+    // Automatically close window with consent to use your data
+    try {
+      await this.page.waitForSelector(".fc-cta-consent", { timeout: 5000 });
+      await this.page.locator(".fc-cta-consent").click();
+    } catch (error) {
+      console.log(
+        "Contest dialog didn't appear within 5 seconds, continuing..."
+      );
+    }
   }
 
   async verifyTextIsVisible(text: string) {

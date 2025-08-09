@@ -4,18 +4,9 @@ import { BASE_URL } from "../../../constants/constants";
 import { loginUser } from "../../../data/loginUser.json";
 
 test.beforeEach(async ({ page }) => {
-  // Navigate to the home page
-  await page.goto(BASE_URL);
-  await page.waitForLoadState("networkidle");
-  // Automatically close window with consent to use your data
-  try {
-    await page.waitForSelector(".fc-cta-consent", { timeout: 5000 });
-    await page.locator(".fc-cta-consent").click();
-  } catch (error) {
-    throw new Error(
-      "Something went wrong while closing window with consent to use your data"
-    );
-  }
+  const poManager = new POManager(page);
+  const homePage = poManager.getHomePage();
+  await homePage.navigateToHomeAndDismissConsent();
 });
 
 test("Verify subscription on Home Page", async ({ page }) => {
