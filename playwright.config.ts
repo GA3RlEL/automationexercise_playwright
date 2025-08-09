@@ -23,6 +23,17 @@ export default defineConfig({
     },
 
     {
+      name: "chromium-headless",
+      testDir: "./tests/ui",
+      use: {
+        browserName: "chromium",
+        headless: true,
+        screenshot: "only-on-failure",
+        video: "retain-on-failure",
+      },
+    },
+
+    {
       name: "firefox",
       testDir: "./tests/ui",
       use: {
